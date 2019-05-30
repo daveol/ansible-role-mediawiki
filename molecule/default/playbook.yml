@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: daveol.mediawiki
+
+  post_tasks:
+    - name: Ensure mediawiki is running
+      uri:
+        url: "http://127.0.0.1/wiki/Main_Page"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 60
+      delay: 1
