@@ -1,2 +1,4 @@
 ---
 # defaults file for mediawiki
+mediawiki_path: /var/www/mediawiki
+mediawiki_version: 1.32.1
