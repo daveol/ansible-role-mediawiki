@@ -11,6 +11,5 @@ galaxy_info:
         - 7
   galaxy_tags:
     - mediawiki
-    - git
 
 dependencies: []
