@@ -4,6 +4,7 @@
   become: true
 
   roles:
+    - role: geerlingguy.git
     - role: daveol.mediawiki
 
   post_tasks:

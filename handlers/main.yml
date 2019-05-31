@@ -1,2 +1,3 @@
 ---
-# handlers file for mediawiki
+- name: run update.php
+  command: "{{ mediawiki_path }}/maintainance/update.php --quick"

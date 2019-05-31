@@ -1,6 +1,4 @@
 ---
-# tasks file for mediawiki
-
 - name: Install core Mediawiki
   git:
     dest: "{{ mediawiki_path }}"
