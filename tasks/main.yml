@@ -3,7 +3,7 @@
   git:
     dest: "{{ mediawiki_path }}"
     version: "{{ mediawiki_version }}"
-    force: yes
+    force: true
     repo: https://github.com/wikimedia/mediawiki.git
   notify:
     - composer update mediawiki
@@ -13,7 +13,7 @@
   git:
     dest: "{{ mediawiki_path }}/extensions/{{ item.name }}"
     version: "{{ item.version | default(mediawiki_version) }}"
-    force: yes
+    force: true
     repo: "{{ item.git | default('https://github.com/wikimedia/mediawiki-extensions-' + item.name + '.git') }}"
   loop: "{{ mediawiki_extensions }}"
   notify:
@@ -24,7 +24,7 @@
   git:
     dest: "{{ mediawiki_path }}/skins/{{ item.name }}"
     version: "{{ item.version | default(mediawiki_version) }}"
-    force: yes
+    force: true
     repo: "{{ item.git | default('https://github.com/wikimedia/mediawiki-skins-' + item.name + '.git') }}"
   loop: "{{ mediawiki_skins }}"
   notify:
