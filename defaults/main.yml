@@ -1,4 +1,40 @@
 ---
 # defaults file for mediawiki
+mediawiki_wiki_name: Test Wiki Please Ignore
+
 mediawiki_path: /var/www/mediawiki
-mediawiki_version: 1.32.1
+mediawiki_scriptpath: /w
+
+mediawiki_version: REL1_34
+
+mediawiki_extensions:
+  - name: CategoryTree
+  - name: Cite
+  - name: CiteThisPage
+  - name: CodeEditor
+  - name: ConfirmEdit
+  - name: Gadgets
+  - name: ImageMap
+  - name: InputBox
+  - name: Interwiki
+  - name: LocalisationUpdate
+  - name: MultimediaViewer
+  - name: Nuke
+  - name: OATHAuth
+  - name: PageImages
+  - name: ParserFunctions
+  - name: PdfHandler
+  - name: Poem
+  - name: Renameuser
+  - name: ReplaceText
+  - name: Scribunto
+  - name: SpamBlacklist
+  - name: SyntaxHighlight_GeSHi
+  - name: TextExtracts
+  - name: TitleBlacklist
+  - name: WikiEditor
+
+mediawiki_skins:
+  - name: MonoBook
+  - name: Timeless
+  - name: Vector

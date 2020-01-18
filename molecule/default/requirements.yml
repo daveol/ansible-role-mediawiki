@@ -1,2 +1,9 @@
 ---
 - src: geerlingguy.git
+- src: geerlingguy.postgresql
+- src: geerlingguy.repo-remi
+- src: geerlingguy.repo-epel
+- src: geerlingguy.mysql
+- src: geerlingguy.php-versions
+- src: geerlingguy.php
+- src: geerlingguy.composer

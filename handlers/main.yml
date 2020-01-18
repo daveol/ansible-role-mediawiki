@@ -1,3 +1,8 @@
 ---
-- name: run update.php
-  command: "{{ mediawiki_path }}/maintainance/update.php --quick"
+- name: composer update mediawiki
+  composer:
+    command: install
+    working_dir: "{{ mediawiki_path }}"
+
+- name: maintenance update mediawiki
+  command: php {{ mediawiki_path }}/maintenance/update.php --quick

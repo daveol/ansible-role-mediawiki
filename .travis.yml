@@ -7,6 +7,11 @@ env:
     - ROLE_NAME: mediawiki
   matrix:
     - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: centos7
+      MOLECULE_PLAYBOOK: playbook-postgresql.yml
+    - MOLECULE_DISTRO: centos7
+      MOLECULE_PLAYBOOK: playbook-sqlite.yml
+
 
 install:
   # Install test dependencies.

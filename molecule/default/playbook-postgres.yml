@@ -5,12 +5,12 @@
   vars:
     php_version: '7.3'
     php_packages_extra:
-      - php-mysql
+      - php-postgresql
       - php-intl
       - php-pecl-zip
 
     mediawiki_database:
-      type: mysql
+      type: postgres
       user: mediawiki
       name: mediawiki
       password: mediawiki
@@ -18,12 +18,11 @@
     mediawiki_admin_user: mediawiki
     mediawiki_admin_pass: mediawiki
 
-    mysql_databases:
+    postgresql_databases:
       - name: "{{ mediawiki_database.name }}"
-    mysql_users:
+    postgresql_users:
       - name: "{{ mediawiki_database.user }}"
         password: "{{ mediawiki_database.password }}"
-        host: "l%"
         priv: "{{ mediawiki_database.name }}.*:ALL"
 
   roles:
@@ -32,7 +31,7 @@
     - role: geerlingguy.repo-epel
       when: ansible_os_family == 'RedHat'
     - role: geerlingguy.git
-    - role: geerlingguy.mysql
+    - role: geerlingguy.postgresql
     - role: geerlingguy.php-versions
     - role: geerlingguy.php
     - role: geerlingguy.composer
