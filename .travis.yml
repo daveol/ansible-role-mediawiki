@@ -8,7 +8,7 @@ env:
   matrix:
     - MOLECULE_DISTRO: centos7
     - MOLECULE_DISTRO: centos7
-      MOLECULE_PLAYBOOK: playbook-postgresql.yml
+      MOLECULE_PLAYBOOK: playbook-postgres.yml
     - MOLECULE_DISTRO: centos7
       MOLECULE_PLAYBOOK: playbook-sqlite.yml
 
