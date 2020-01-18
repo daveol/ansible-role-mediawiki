@@ -51,9 +51,9 @@ $wgEmailAuthentication = true;
 ## Database settings
 $wgDBtype = "{{ mediawiki_database.type }}";
 $wgDBserver = "{{ mediawiki_database.server | default('') }}";
-$wgDBname = "{{ mediawiki_database.name }}";
-$wgDBuser = "{{ mediawiki_database.user }}";
-$wgDBpassword = "{{ mediawiki_database.password }}";
+$wgDBname = "{{ mediawiki_database.name | default('') }}";
+$wgDBuser = "{{ mediawiki_database.user | default('') }}";
+$wgDBpassword = "{{ mediawiki_database.password | default('') }}";
 
 # MySQL specific settings
 $wgDBprefix = "";
@@ -89,14 +89,14 @@ $wgShellLocale = "en_US.utf8";
 # Site language code, should be one of the list in ./languages/data/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "{{ lookup('password', '/dev/null length=64 chars=ascii_letters') }}";
+$wgSecretKey = "{{ wgSecretKey }}";
 
 # Changing this will log out all existing sessions.
 $wgAuthenticationTokenVersion = "1";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}";
+$wgUpgradeKey = "{{ wgUpgradeKey }}";
 
 ## For attaching licensing metadata to pages, and displaying an
 ## appropriate copyright notice / icon. GNU Free Documentation

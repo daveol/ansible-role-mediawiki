@@ -1,0 +1,13 @@
+php \
+      "{{ mediawiki_path }}/maintenance/install.php" \
+      --dbtype={{ mediawiki_database.type }} \
+      {% if mediawiki_database.type in ['mysql', 'postgresql'] %}
+      --dbname={{ mediawiki_database.name }} \
+      --dbuser={{ mediawiki_database.user }} \
+      --dbpass={{ mediawiki_database.password }} \
+      --dbserver={{ mediawiki_database.server | default('localhost') }} \
+      {% endif %}
+      --pass={{ mediawiki_admin_pass }} \
+      "{{ mediawiki_wiki_name }}" \
+      "{{ mediawiki_admin_user }}"
+

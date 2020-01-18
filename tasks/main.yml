@@ -5,6 +5,7 @@
     version: "{{ mediawiki_version }}"
     force: true
     repo: https://github.com/wikimedia/mediawiki.git
+  register: mediawiki_download
   notify:
     - composer update mediawiki
     - maintenance update mediawiki
@@ -16,6 +17,7 @@
     force: true
     repo: "{{ item.git | default('https://github.com/wikimedia/mediawiki-extensions-' + item.name + '.git') }}"
   loop: "{{ mediawiki_extensions }}"
+  register: mediawiki_extensions_download
   notify:
     - composer update mediawiki
     - maintenance update mediawiki
@@ -27,30 +29,55 @@
     force: true
     repo: "{{ item.git | default('https://github.com/wikimedia/mediawiki-skins-' + item.name + '.git') }}"
   loop: "{{ mediawiki_skins }}"
+  register: mediawiki_skin_download
   notify:
     - composer update mediawiki
     - maintenance update mediawiki
 
 
-- name: Install mediawiki (mysql/postgresql)
-  command:
-    argv:
-      - php
-      - "{{ mediawiki_path }}/maintenance/install.php"
-      - --dbtype={{ mediawiki_database.type }}
-      - --dbname={{ mediawiki_database.name }}
-      - --dbuser={{ mediawiki_database.user }}
-      - --dbpass={{ mediawiki_database.password }}
-      - --dbserver={{ mediawiki_database.server | default('localhost') }}
-      - --pass={{ mediawiki_admin_pass }}
-      - "{{ mediawiki_wiki_name }}"
-      - "{{ mediawiki_admin_user }}"
+- name: Install mediawiki
+  shell: "{{ lookup('template', 'install.sh.j2') }}"
   args:
     creates: "{{ mediawiki_path }}/LocalSettings.php"
+  register: mediawiki_install
+
+
+- name: Get wgSecretkey
+  shell: grep wgSecretKey {{ mediawiki_path }}/LocalSettings.php | awk -F\" '{ print $2 }'
+  register: r_wgSecretKey
+  when:
+    - mediawiki_download.changed
+    - mediawiki_extensions_download.changed
+    - mediawiki_skin_download.changed
+    - mediawiki_install.changed
+
+- name: Get wgUpgradeKey
+  shell: grep wgUpgradeKey {{ mediawiki_path }}/LocalSettings.php | awk -F\" '{ print $2 }'
+  register: r_wgUpgradeKey
+  when:
+    - mediawiki_download.changed
+    - mediawiki_extensions_download.changed
+    - mediawiki_skin_download.changed
+    - mediawiki_install.changed
+
+- name: Register keys
+  set_fact:
+    wgSecretKey: "{{ r_wgSecretKey.stdout | trim }}"
+    wgUpgradeKey: "{{ r_wgUpgradeKey.stdout | trim }}"
+  when:
+    - mediawiki_download.changed
+    - mediawiki_extensions_download.changed
+    - mediawiki_skin_download.changed
+    - mediawiki_install.changed
 
 - name: Configure mediawiki
   template:
     src: LocalSettings.php.j2
     dest: "{{ mediawiki_path }}/LocalSettings.php"
+  when:
+    - mediawiki_download.changed
+    - mediawiki_extensions_download.changed
+    - mediawiki_skin_download.changed
+    - mediawiki_install.changed
   notify:
     - maintenance update mediawiki
