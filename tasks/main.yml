@@ -36,14 +36,16 @@
 
 
 - name: Install mediawiki
-  shell: "{{ lookup('template', 'install.sh.j2') }}"
+  shell: "{{ lookup('template', 'install.sh.j2') }}"    # noqa 305
   args:
     creates: "{{ mediawiki_path }}/LocalSettings.php"
   register: mediawiki_install
 
 
-- name: Get wgSecretkey
-  shell: grep wgSecretKey {{ mediawiki_path }}/LocalSettings.php | awk -F\" '{ print $2 }'
+- name: Get wgSecretkey   # noqa 305 503
+  shell: |
+    set -o pipefail
+    grep wgSecretKey {{ mediawiki_path }}/LocalSettings.php | awk -F\" '{ print $2 }i'
   register: r_wgSecretKey
   when:
     - mediawiki_download.changed
@@ -51,8 +53,10 @@
     - mediawiki_skin_download.changed
     - mediawiki_install.changed
 
-- name: Get wgUpgradeKey
-  shell: grep wgUpgradeKey {{ mediawiki_path }}/LocalSettings.php | awk -F\" '{ print $2 }'
+- name: Get wgUpgradeKey  # noqa 305 503
+  shell: |
+    set -o pipefail
+    grep wgUpgradeKey {{ mediawiki_path }}/LocalSettings.php | awk -F\" '{ print $2 }'
   register: r_wgUpgradeKey
   when:
     - mediawiki_download.changed
@@ -61,7 +65,7 @@
     - mediawiki_install.changed
 
 - name: Register keys
-  set_fact:
+  set_fact:   # noqa 503
     wgSecretKey: "{{ r_wgSecretKey.stdout | trim }}"
     wgUpgradeKey: "{{ r_wgUpgradeKey.stdout | trim }}"
   when:
@@ -71,7 +75,7 @@
     - mediawiki_install.changed
 
 - name: Configure mediawiki
-  template:
+  template:   # noqa 503
     src: LocalSettings.php.j2
     dest: "{{ mediawiki_path }}/LocalSettings.php"
   when:
